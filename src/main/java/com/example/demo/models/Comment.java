@@ -14,6 +14,7 @@ public class Comment {
     private Long id;
 
     private String content;
+    @ManyToOne
     private User author;
     private Boolean isSpoiler;
 
