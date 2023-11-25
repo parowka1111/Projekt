@@ -2,7 +2,9 @@ package com.example.demo.controllers;
 
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +14,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -25,8 +30,10 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        userService.registerUser(user);
+        return ResponseEntity.ok("User registered");
+        //return userRepository.save(user);
     }
 
     @PutMapping("/{id}")
