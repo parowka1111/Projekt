@@ -19,11 +19,16 @@ public class UserService {
     private EntityManager entityManager;
 
     public User registerUser(User user) {
-        String password = user.getPassword();
-        if (password == null || !isPasswordValid(user.getPassword())) {
+//        String password = user.getPassword();
+//        String email = user.getEmail();
+        if (user.getPassword() == null || !isPasswordValid(user.getPassword())) {
             throw new IllegalArgumentException("Incorrect password");
         }
-        isUsernameUnique(user.getUsername());
+        if (user.getEmail() == null || !isEmailValid(user.getEmail())) {
+            throw new IllegalArgumentException("Incorrect email");
+        }
+        isValueUnique(user.getUsername(), "username");
+        isValueUnique(user.getEmail(), "email");
         return userRepository.save(user);
     }
 
@@ -33,14 +38,19 @@ public class UserService {
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
-    private void isUsernameUnique(String username) {
-        String jpql = "SELECT COUNT(u) FROM User u WHERE u.username = :username";
+    private boolean isEmailValid(String email) {
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{2,}@[a-z]{2,}\\.[a-z]{2,3}$");
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+    private void isValueUnique(String value, String fieldName) {
+        String jpql = "SELECT COUNT(u) FROM User u WHERE u." + fieldName + " = :value";
         Query query = entityManager.createQuery(jpql);
-        query.setParameter("username", username);
+        query.setParameter("value", value);
 
         long count = (long) query.getSingleResult();
         if (count > 0) {
-            throw new IllegalArgumentException("Username exists");
+            throw new IllegalArgumentException(fieldName + " exists");
         }
     }
 
