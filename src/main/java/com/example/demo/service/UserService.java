@@ -19,8 +19,6 @@ public class UserService {
     private EntityManager entityManager;
 
     public User registerUser(User user) {
-//        String password = user.getPassword();
-//        String email = user.getEmail();
         if (user.getPassword() == null || !isPasswordValid(user.getPassword())) {
             throw new IllegalArgumentException("Incorrect password");
         }
@@ -29,6 +27,8 @@ public class UserService {
         }
         isValueUnique(user.getUsername(), "username");
         isValueUnique(user.getEmail(), "email");
+
+        user.setRole(assignRole(user.getEmail()));
         return userRepository.save(user);
     }
 
@@ -38,7 +38,8 @@ public class UserService {
         return matcher.matches();
     }
     private boolean isEmailValid(String email) {
-        Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$");
+
+        Pattern pattern = Pattern.compile("^(.+)@(\\S+)$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
@@ -50,6 +51,14 @@ public class UserService {
         long count = (long) query.getSingleResult();
         if (count > 0) {
             throw new IllegalArgumentException(fieldName + " exists");
+        }
+    }
+
+    private String assignRole(String email) {
+        if(email.contains("@ServiceAdmin.pl")){
+            return "ADMIN";
+        } else {
+            return "GUEST";
         }
     }
 
