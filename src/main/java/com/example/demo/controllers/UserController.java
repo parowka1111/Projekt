@@ -43,6 +43,7 @@ public class UserController {
                     user.setUsername(updatedUser.getUsername());
                     user.setPassword(updatedUser.getPassword());
                     user.setRole(updatedUser.getRole());
+                    user.setEmail(updatedUser.getEmail());
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new RuntimeException("User not found: " + id));
