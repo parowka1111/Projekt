@@ -38,7 +38,7 @@ public class UserService {
         return matcher.matches();
     }
     private boolean isEmailValid(String email) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{2,}@[a-z]{2,}\\.[a-z]{2,}$");
+        Pattern pattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
