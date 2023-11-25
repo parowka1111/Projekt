@@ -33,13 +33,12 @@ public class UserService {
     }
 
     private boolean isPasswordValid(String password) {
-        if (password.length() < 8) return false;
         Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
     private boolean isEmailValid(String email) {
-        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{2,}@[a-z]{2,}\\.[a-z]{2,3}$");
+        Pattern pattern = Pattern.compile("^[a-zA-Z0-9]{2,}@[a-z]{2,}\\.[a-z]{2,}$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
