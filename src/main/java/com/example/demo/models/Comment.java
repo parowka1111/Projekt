@@ -13,6 +13,9 @@ public class Comment {
     @ManyToOne
     private User author;
     private Boolean isSpoiler;
+    private String movie;
+
+    private Integer rate;
 
     public Long getId() {
         return id;
@@ -30,6 +33,14 @@ public class Comment {
         this.content = content;
     }
 
+    public String getMovie() {
+        return movie;
+    }
+
+    public void setMovie(String movie) {
+        this.movie = movie;
+    }
+
     public User getAuthor() {
         return author;
     }
@@ -44,6 +55,14 @@ public class Comment {
 
     public void setIsSpoiler(Boolean isSpoiler) {
         this.isSpoiler = isSpoiler;
+    }
+
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
     }
 
 }

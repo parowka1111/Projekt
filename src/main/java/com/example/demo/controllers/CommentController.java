@@ -67,6 +67,8 @@ public class CommentController {
                     comment.setAuthor(newUser);
                     comment.setContent(updatedComment.getContent());
                     comment.setIsSpoiler(updatedComment.getIsSpoiler());
+                    comment.setMovie(updatedComment.getMovie());
+                    comment.setRate(updatedComment.getRate());
                     return commentRepository.save(comment);
                 })
                 .orElseThrow(() -> new RuntimeException("Comment not found " + id));
