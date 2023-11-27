@@ -18,7 +18,11 @@ public class UserService {
     @Autowired
     private EntityManager entityManager;
 
+
     public User registerUser(User user) {
+        if (user.getUsername().length() < 3) {
+            throw new IllegalArgumentException("Incorrect username");
+        }
         if (user.getPassword() == null || !isPasswordValid(user.getPassword())) {
             throw new IllegalArgumentException("Incorrect password");
         }
@@ -31,6 +35,7 @@ public class UserService {
         user.setRole(assignRole(user.getEmail()));
         return userRepository.save(user);
     }
+
 
     private boolean isPasswordValid(String password) {
         Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");

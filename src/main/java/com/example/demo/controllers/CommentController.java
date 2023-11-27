@@ -1,14 +1,17 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Comment;
+import com.example.demo.models.Product;
 import com.example.demo.models.User;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:8000")
 @RestController
@@ -20,13 +23,21 @@ public class CommentController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping
     public List<Comment> getAllComments() {
+        return commentRepository.findAll();
+    }
+
+    @GetMapping("/hiddenspoilers")
+    public List<Comment> getAllComments_hideSpoilers() {
         List<Comment> comments = commentRepository.findAll();
-        for (Comment comment : comments) {
-            comment.getAuthor().setUsername(comment.getAuthor().getUsername());
-        }
-        return comments;
+        List<Comment> convertedComments = comments.stream()
+                .map(commentService::convertCommentContent)
+                .collect(Collectors.toList());
+        return convertedComments;
     }
 
     @GetMapping("/{id}")
