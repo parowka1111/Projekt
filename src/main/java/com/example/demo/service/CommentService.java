@@ -13,6 +13,8 @@ public class CommentService {
             censoredComment.setContent(censoredContent);
             censoredComment.setAuthor(comment.getAuthor());
             censoredComment.setIsSpoiler(comment.getIsSpoiler());
+            censoredComment.setMovie(comment.getMovie());
+            censoredComment.setRate(comment.getRate());
             return censoredComment;
         } else {
             return comment;
