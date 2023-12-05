@@ -1,8 +1,6 @@
 package com.example.demo.controllers;
 
-
 import com.example.demo.models.Movie;
-import com.example.demo.models.Product;
 import com.example.demo.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +33,10 @@ public class MovieController {
 
     @PutMapping("/{id}")
     public Movie updateMovie(@PathVariable Long id, @RequestBody Movie updatedMovie) {
-        return movieRepository.findById(id)
-                .map(movie -> {
-                    movie.setTitle(updatedMovie.getTitle());
-                    return movieRepository.save(movie);
-                })
-                .orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
+        return movieRepository.findById(id).map(movie -> {
+            movie.setTitle(updatedMovie.getTitle());
+            return movieRepository.save(movie);
+        }).orElseThrow(() -> new RuntimeException("Movie not found with id: " + id));
     }
 
     @DeleteMapping("/{id}")
