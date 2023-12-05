@@ -26,7 +26,9 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping
-    public List<User> getAllUsers(){ return userRepository.findAll();}
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
 
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable Long id) {
@@ -37,23 +39,18 @@ public class UserController {
     public ResponseEntity<?> createUser(@RequestBody User user) {
         userService.registerUser(user);
         return ResponseEntity.ok("User registered");
-        //return userRepository.save(user);
     }
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         try {
-
-            Long userId = userService.authenticateUser(loginRequest.getUsernameOrEmail(), loginRequest.getPassword());
-
+            Long userId = userService.loginUser(loginRequest.getUsernameOrEmail(), loginRequest.getPassword());
             Optional<User> userOptional = userRepository.findById(userId);
-
             if (userOptional.isPresent()) {
                 User user = userOptional.get();
-
                 Map<String, Object> response = new HashMap<>();
                 response.put("id", user.getId());
                 response.put("role", user.getRole());
-
                 return ResponseEntity.ok(response);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
@@ -65,21 +62,18 @@ public class UserController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        return userRepository.findById(id)
-                .map(user -> {
-                    user.setUsername(updatedUser.getUsername());
-                    user.setPassword(updatedUser.getPassword());
-                    user.setRole(updatedUser.getRole());
-                    user.setEmail(updatedUser.getEmail());
-                    return userRepository.save(user);
-                })
-                .orElseThrow(() -> new RuntimeException("User not found: " + id));
+        return userRepository.findById(id).map(user -> {
+            user.setUsername(updatedUser.getUsername());
+            user.setPassword(updatedUser.getPassword());
+            user.setRole(updatedUser.getRole());
+            user.setEmail(updatedUser.getEmail());
+            return userRepository.save(user);
+        }).orElseThrow(() -> new RuntimeException("User not found: " + id));
     }
 
     @DeleteMapping("/{id}")
     public void deleteUser(@PathVariable Long id) {
         userRepository.deleteById(id);
     }
-
 
 }

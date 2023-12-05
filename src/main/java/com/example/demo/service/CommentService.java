@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CommentService {
-    public Comment convertCommentContent(Comment comment) {
+    public Comment censorSpoilers(Comment comment) {
         if (comment.getIsSpoiler() != null && comment.getIsSpoiler()) {
             String censoredContent = comment.getContent().replaceAll("[^ ]", "*");
             Comment censoredComment = new Comment();
