@@ -72,13 +72,13 @@ public class UserService {
         }
     }
 
-    private boolean isPasswordValid(String password) {
+    boolean isPasswordValid(String password) {
         Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
 
-    private boolean isEmailValid(String email) {
+    boolean isEmailValid(String email) {
         Pattern pattern = Pattern.compile("^(.+)@(\\S+)$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
