@@ -1,9 +1,11 @@
 package com.example.demo.controllers;
 
 import com.example.demo.models.Comment;
+import com.example.demo.models.Movie;
 import com.example.demo.models.Product;
 import com.example.demo.models.User;
 import com.example.demo.repository.CommentRepository;
+import com.example.demo.repository.MovieRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class CommentController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private MovieRepository movieRepository;
 
     @Autowired
     private CommentService commentService;
@@ -39,11 +43,27 @@ public class CommentController {
                 .collect(Collectors.toList());
         return convertedComments;
     }
+    @GetMapping("/movie/{id}/{isSpoiler}")
+    public List<Comment> getAllComments_byMovie(@PathVariable Long id, @PathVariable boolean isSpoiler) {
+        List<Comment> comments = commentRepository.findAll();
+        List<Comment> filteredComments = comments.stream()
+                .filter(comment -> comment.getMovie() != null && comment.getMovie().getId().equals(id))
+                .map(comment -> {
+                    if (isSpoiler) {
+                        return commentService.convertCommentContent(comment);
+                    } else {
+                        return comment;
+                    }
+                })
+                .collect(Collectors.toList());
+        return filteredComments;
+    }
 
     @GetMapping("/{id}")
     public Optional<Comment> getCommentById(@PathVariable Long id) {
         Optional<Comment> comment = commentRepository.findById(id);
         comment.ifPresent(value -> value.getAuthor().setUsername(value.getAuthor().getUsername()));
+        comment.ifPresent(value -> value.getMovie().setTitle(value.getMovie().getTitle()));
         return comment;
     }
 
@@ -54,6 +74,11 @@ public class CommentController {
                 .orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
         comment.setAuthor(existingUser);
+        Long titleId = comment.getMovie().getId();
+        Movie existingMovie = movieRepository.findById(titleId)
+                .orElseThrow(() -> new RuntimeException("Movie not found: " + titleId));
+
+        comment.setMovie(existingMovie);
         return commentRepository.save(comment);
     }
 
@@ -64,7 +89,11 @@ public class CommentController {
                     User updatedUser = updatedComment.getAuthor();
                     User newUser = userRepository.findById(updatedUser.getId())
                             .orElseThrow(() -> new RuntimeException("User not found " + updatedUser.getId()));
+                    Movie updatedMovie = updatedComment.getMovie();
+                    Movie newMovie = movieRepository.findById(updatedMovie.getId())
+                            .orElseThrow(() -> new RuntimeException("Movie not found " + updatedMovie.getId()));
                     comment.setAuthor(newUser);
+                    comment.setMovie(newMovie);
                     comment.setContent(updatedComment.getContent());
                     comment.setIsSpoiler(updatedComment.getIsSpoiler());
                     comment.setMovie(updatedComment.getMovie());

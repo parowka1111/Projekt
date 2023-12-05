@@ -13,7 +13,9 @@ public class Comment {
     @ManyToOne
     private User author;
     private Boolean isSpoiler;
-    private String movie;
+    @ManyToOne
+    private Movie movie;
+    //private String movie;
 
     private Integer rate;
 
@@ -33,11 +35,11 @@ public class Comment {
         this.content = content;
     }
 
-    public String getMovie() {
+    public Movie getMovie() {
         return movie;
     }
 
-    public void setMovie(String movie) {
+    public void setMovie(Movie movie) {
         this.movie = movie;
     }
 
