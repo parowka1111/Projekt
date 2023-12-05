@@ -25,7 +25,9 @@ public class CommentService {
     }
 
     static boolean isRateValid(int rate) {
-        if(rate >= 1 && rate <= 5) return true;
+        if(rate >= 1 && rate <= 5){
+            return true;
+        }
         return false;
     }
 }
