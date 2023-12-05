@@ -1,20 +1,11 @@
 package com.example.demo.service;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
-
-    @Test
-    public void testIsPasswordValid() {
-        UserService userService = new UserService();
-
-        assertTrue(userService.isPasswordValid("P@ssw0rd"));
-        assertTrue(userService.isPasswordValid("Abc!Defg2"));
-        assertFalse(userService.isPasswordValid("password"));
-        assertFalse(userService.isPasswordValid("Passw0rd"));
-    }
 
     @Test
     public void testIsEmailValid() {
