@@ -10,24 +10,21 @@ import java.util.regex.Pattern;
 public class CommentService {
     public Comment censorSpoilers(Comment comment) {
         if (comment.getIsSpoiler() != null && comment.getIsSpoiler()) {
-            String censoredContent = comment.getContent().replaceAll("[^ ]", "*");
-            Comment censoredComment = new Comment();
-            censoredComment.setId(comment.getId());
-            censoredComment.setContent(censoredContent);
-            censoredComment.setAuthor(comment.getAuthor());
-            censoredComment.setIsSpoiler(comment.getIsSpoiler());
-            censoredComment.setMovie(comment.getMovie());
-            censoredComment.setRate(comment.getRate());
-            return censoredComment;
+            comment.setContent(hideLetters(comment.getContent()));
+            return comment;
         } else {
             return comment;
         }
     }
 
-    static boolean isRateValid(int rate) {
+    public String hideLetters(String text){
+        return text.replaceAll("[^ ]", "*");
+    }
+
+    public boolean isRateValid(int rate) {
         if(rate >= 1 && rate <= 5){
             return true;
         }
-        return false;
+        throw new RuntimeException("invalid rate");
     }
 }

@@ -105,7 +105,7 @@ public class UserService {
         return userIds.get(0);
     }
 
-    private String assignRole(String email) {
+    String assignRole(String email) {
         if (email.contains("@ServiceAdmin.pl")) {
             return "ADMIN";
         } else {
