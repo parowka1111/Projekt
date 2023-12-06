@@ -70,8 +70,9 @@ public class CommentController {
         comment.setAuthor(existingUser);
         Long titleId = comment.getMovie().getId();
         Movie existingMovie = movieRepository.findById(titleId).orElseThrow(() -> new RuntimeException("Movie not found: " + titleId));
-
         comment.setMovie(existingMovie);
+
+        commentService.isRateValid(comment.getRate());
         return commentRepository.save(comment);
     }
 
