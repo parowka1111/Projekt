@@ -15,7 +15,6 @@ public class Comment {
     private Boolean isSpoiler;
     @ManyToOne
     private Movie movie;
-    //private String movie;
 
     private Integer rate;
 

@@ -13,6 +13,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${security.password.pepper}")
     private String pepper;
 
+
     public String getPepper() {
         return pepper;
     }
@@ -22,4 +23,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/**").permitAll()
                 .and().csrf().disable().formLogin().disable().httpBasic().disable();
     }
+
 }
