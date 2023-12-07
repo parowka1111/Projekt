@@ -58,12 +58,7 @@ public class CommentController {
 
     @GetMapping("/{id}")
     public Optional<Comment> getCommentById(@PathVariable Long id) {
-        return commentRepository.findById(id)
-                .map(comment -> {
-                    comment.getAuthor().setUsername(comment.getAuthor().getUsername());
-                    comment.getMovie().setTitle(comment.getMovie().getTitle());
-                    return comment;
-                });
+        return commentService.getCommentById(id);
     }
 
     @PostMapping
