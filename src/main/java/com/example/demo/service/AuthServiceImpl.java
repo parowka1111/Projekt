@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.interfaces.AuthService;
 import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
@@ -7,11 +8,12 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 @Service
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
 
     private final SecureRandom secureRandom = new SecureRandom();
 
-    static String encryptPassword(String password) {
+    @Override
+    public String encryptPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashedBytes = digest.digest(password.getBytes());
@@ -30,7 +32,7 @@ public class AuthService {
         }
     }
 
-    String generateSalt() {
+    public String generateSalt() {
         byte[] saltBytes = new byte[16];
         secureRandom.nextBytes(saltBytes);
         return bytesToHex(saltBytes);

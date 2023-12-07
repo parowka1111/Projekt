@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceTest {
 
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @BeforeEach
     public void init() {
-        userService = new UserService();
+        userService = new UserServiceImpl();
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.interfaces.UserService;
 import com.example.demo.models.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class UserService {
+public class UserServiceImpl implements UserService {
 
     @Value("${security.password.pepper}")
     private String pepper;
@@ -24,11 +25,11 @@ public class UserService {
     @Autowired
     private EntityManager entityManager;
     @Autowired
-    private AuthService authHashing;
+    private AuthServiceImpl authService;
 
     public String getHashedPassword(String password, String salt) {
         String hashedPassword = password + pepper + salt;
-        hashedPassword = AuthService.encryptPassword(hashedPassword);
+        hashedPassword = authService.encryptPassword(hashedPassword);
         return hashedPassword;
     }
 
@@ -46,7 +47,7 @@ public class UserService {
         isValueUnique(user.getEmail(), "email");
 
         user.setRole(assignRole(user.getEmail()));
-        String salt = authHashing.generateSalt();
+        String salt = authService.generateSalt();
         user.setSalt(salt);
 
         String hashedPassword = getHashedPassword(user.getPassword(), salt);
@@ -75,13 +76,13 @@ public class UserService {
         }
     }
 
-    boolean isPasswordValid(String password) {
+    public boolean isPasswordValid(String password) {
         Pattern pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
         Matcher matcher = pattern.matcher(password);
         return matcher.matches();
     }
 
-    boolean isEmailValid(String email) {
+    public boolean isEmailValid(String email) {
         Pattern pattern = Pattern.compile("^(.+)@(\\S+)$");
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
