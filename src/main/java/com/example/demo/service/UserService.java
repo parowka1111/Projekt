@@ -26,6 +26,12 @@ public class UserService {
     @Autowired
     private AuthService authHashing;
 
+    public String getHashedPassword(String password, String salt) {
+        String hashedPassword = password + pepper + salt;
+        hashedPassword = AuthService.encryptPassword(hashedPassword);
+        return hashedPassword;
+    }
+
     public User registerUser(User user) {
         if (user.getUsername().length() < 3 || user.getUsername().contains("@")) {
             throw new IllegalArgumentException("Incorrect username");
@@ -43,13 +49,11 @@ public class UserService {
         String salt = authHashing.generateSalt();
         user.setSalt(salt);
 
-        String hashedPassword = user.getPassword() + pepper + salt;
-        hashedPassword = AuthService.encryptPassword(hashedPassword);
+        String hashedPassword = getHashedPassword(user.getPassword(), salt);
         user.setPassword(hashedPassword);
 
         return userRepository.save(user);
     }
-
 
     public Long loginUser(String usernameOrEmail, String password) {
         Long userId;
@@ -62,8 +66,7 @@ public class UserService {
         User user = userOptional.orElseThrow(() -> new RuntimeException("User not found"));
 
         String salt = user.getSalt();
-        String hashedPassword = password + pepper + salt;
-        hashedPassword = AuthService.encryptPassword(hashedPassword);
+        String hashedPassword = getHashedPassword(password, salt);
 
         if (Objects.equals(user.getPassword(), hashedPassword)) {
             return user.getId();

@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -9,10 +8,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserServiceTest {
 
     private UserService userService;
+
     @BeforeEach
     public void init() {
         userService = new UserService();
     }
+
     @Test
     public void testIsPasswordValid() {
         assertTrue(userService.isPasswordValid("P@ssw0rd"));
