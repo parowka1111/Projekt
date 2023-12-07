@@ -5,14 +5,18 @@ import javax.persistence.*;
 @Entity
 @Table(name = "comment")
 public class Comment {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String content;
+
     @ManyToOne
     private User author;
+
     private Boolean isSpoiler;
+
     @ManyToOne
     private Movie movie;
 

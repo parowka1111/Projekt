@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
+
     @Autowired
     private CommentRepository commentRepository;
 
     @Autowired
+
     private UserRepository userRepository;
     @Autowired
     private MovieRepository movieRepository;

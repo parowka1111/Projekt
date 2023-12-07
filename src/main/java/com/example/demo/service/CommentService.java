@@ -3,9 +3,6 @@ package com.example.demo.service;
 import com.example.demo.models.Comment;
 import org.springframework.stereotype.Service;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 @Service
 public class CommentService {
     public Comment censorSpoilers(Comment comment) {
@@ -17,12 +14,12 @@ public class CommentService {
         }
     }
 
-    public String hideLetters(String text){
+    public String hideLetters(String text) {
         return text.replaceAll("[^ ]", "*");
     }
 
     public boolean isRateValid(int rate) {
-        if(rate >= 1 && rate <= 5){
+        if (rate >= 1 && rate <= 5) {
             return true;
         }
         throw new RuntimeException("invalid rate");
