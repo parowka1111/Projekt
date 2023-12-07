@@ -34,18 +34,14 @@ class CommentControllerTest {
 
     @Test
     public void testGetAllComments() throws Exception {
-
         MvcResult getResult = mockMvc.perform(MockMvcRequestBuilders
                         .get("/comments"))
                 .andExpect(status().isOk())
                 .andReturn();
-
-
         String content = getResult.getResponse().getContentAsString();
         List<Comment> comments = objectMapper.readValue(content, List.class);
         assertFalse(comments.isEmpty());
     }
-
 
     @Test
     public void testCreateComment() throws Exception {
@@ -72,5 +68,4 @@ class CommentControllerTest {
                 .andExpect(jsonPath("$.isSpoiler").value(false))
                 .andExpect(jsonPath("$.rate").value(5));
     }
-
 }
