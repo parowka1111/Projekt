@@ -9,6 +9,9 @@ import com.example.demo.repository.MovieRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -44,6 +47,16 @@ public class CommentServiceImpl implements CommentService {
 
         isRateValid(comment.getRate());
         return commentRepository.save(comment);
+    }
+
+    @Override
+    public Optional<Comment> getCommentById(@PathVariable Long id) {
+        return commentRepository.findById(id)
+                .map(comment -> {
+                    comment.getAuthor().setUsername(comment.getAuthor().getUsername());
+                    comment.getMovie().setTitle(comment.getMovie().getTitle());
+                    return comment;
+                });
     }
 
     @Override
