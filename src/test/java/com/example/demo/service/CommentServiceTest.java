@@ -7,11 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CommentServiceTest {
 
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     @BeforeEach
     public void init() {
-        commentService = new CommentService();
+        commentService = new CommentServiceImpl();
     }
 
     @Test
